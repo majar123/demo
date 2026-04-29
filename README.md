@@ -6,9 +6,9 @@ A Quarkus REST API for managing pet owners and their pets. Built with Java 21, Q
 
 ```
 demo/
-├── entity/     # JPA entities (Owner, Pet)
-├── service/    # Business logic & repositories
-└── api/        # REST resources, DTOs, mappers
+├── demo-entity/    # JPA entities (Owner, Pet)
+├── demo-service/   # Business logic & repositories
+└── demo-api/       # REST resources, DTOs, mappers
 ```
 
 ## API Endpoints
@@ -40,7 +40,7 @@ demo/
 
 ## Configuration
 
-### `api/src/main/resources/application.properties` (production)
+### `demo-api/src/main/resources/application.properties` (production)
 
 | Property | Description | Default |
 |---|---|---|
@@ -64,7 +64,7 @@ Tests use an in-memory H2 database — no PostgreSQL needed to run tests.
 
 **Dev mode** (live reload):
 ```shell
-./mvnw quarkus:dev
+cd demo-api && ../mvnw quarkus:dev
 ```
 
 App: http://localhost:8080  
@@ -81,7 +81,7 @@ Swagger UI: http://localhost:8080/q/swagger-ui
 **Build & run:**
 ```shell
 ./mvnw package
-java -jar api/target/quarkus-app/quarkus-run.jar
+java -jar demo-api/target/quarkus-app/quarkus-run.jar
 ```
 
 ## Running Tests
