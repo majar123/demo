@@ -1,6 +1,6 @@
 package com.demo.service;
 
-import com.demo.entity.Owner;
+import com.demo.entity.OwnerEntity;
 import com.demo.repository.OwnerRepository;
 import com.demo.service.exception.OwnerNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -30,24 +30,24 @@ class OwnerServiceTest {
 
     @Test
     void findAll_shouldReturnList() {
-        List<Owner> owners = List.of(new Owner(), new Owner());
-        when(ownerRepository.getAll()).thenReturn(owners);
+        List<OwnerEntity> ownerEntities = List.of(new OwnerEntity(), new OwnerEntity());
+        when(ownerRepository.getAll()).thenReturn(ownerEntities);
 
-        List<Owner> result = ownerService.findAll();
+        List<OwnerEntity> result = ownerService.findAll();
 
         assertEquals(2, result.size());
     }
 
     @Test
     void findById_shouldReturnOwner() {
-        Owner owner = new Owner();
-        owner.id = 1L;
-        owner.firstName = "John";
-        owner.lastName = "Doe";
+        OwnerEntity ownerEntity = new OwnerEntity();
+        ownerEntity.id = 1L;
+        ownerEntity.firstName = "John";
+        ownerEntity.lastName = "Doe";
 
-        when(ownerRepository.getById(1L)).thenReturn(Optional.of(owner));
+        when(ownerRepository.getById(1L)).thenReturn(Optional.of(ownerEntity));
 
-        Owner result = ownerService.findById(1L);
+        OwnerEntity result = ownerService.findById(1L);
 
         assertNotNull(result);
         assertEquals("John", result.firstName);
@@ -62,60 +62,58 @@ class OwnerServiceTest {
 
     @Test
     void create_shouldSaveAndReturnOwner() {
-        Owner owner = new Owner();
-        owner.firstName = "Jane";
-        owner.lastName = "Smith";
-        owner.phone = "555-5678";
+        OwnerEntity ownerEntity = new OwnerEntity();
+        ownerEntity.firstName = "Jane";
+        ownerEntity.lastName = "Smith";
+        ownerEntity.phone = "555-5678";
 
-        when(ownerRepository.save(any(Owner.class))).thenReturn(owner);
+        when(ownerRepository.save(any(OwnerEntity.class))).thenReturn(ownerEntity);
 
-        Owner result = ownerService.create(owner);
+        OwnerEntity result = ownerService.create(ownerEntity);
 
         assertEquals("Jane", result.firstName);
-        verify(ownerRepository).save(owner);
+        verify(ownerRepository).save(ownerEntity);
     }
 
     @Test
     void update_shouldUpdateFieldsAndSave() {
-        Owner existing = new Owner();
+        OwnerEntity existing = new OwnerEntity();
         existing.id = 1L;
         existing.firstName = "Bob";
         existing.lastName = "Brown";
         existing.phone = "555-0000";
 
-        Owner updated = new Owner();
+        OwnerEntity updated = new OwnerEntity();
         updated.firstName = "Bobby";
         updated.lastName = "Brown";
         updated.phone = "555-0001";
         updated.address = "789 Pine Rd";
 
         when(ownerRepository.getById(1L)).thenReturn(Optional.of(existing));
-        when(ownerRepository.save(existing)).thenReturn(existing);
 
-        Owner result = ownerService.update(1L, updated);
+        OwnerEntity result = ownerService.update(1L, updated);
 
         assertEquals("Bobby", result.firstName);
         assertEquals("555-0001", result.phone);
-        verify(ownerRepository).save(existing);
     }
 
     @Test
     void update_notFound_shouldThrowException() {
         when(ownerRepository.getById(99L)).thenReturn(Optional.empty());
 
-        assertThrows(OwnerNotFoundException.class, () -> ownerService.update(99L, new Owner()));
+        assertThrows(OwnerNotFoundException.class, () -> ownerService.update(99L, new OwnerEntity()));
     }
 
     @Test
     void delete_shouldCallRepositoryDelete() {
-        Owner owner = new Owner();
-        owner.id = 1L;
+        OwnerEntity ownerEntity = new OwnerEntity();
+        ownerEntity.id = 1L;
 
-        when(ownerRepository.getById(1L)).thenReturn(Optional.of(owner));
+        when(ownerRepository.getById(1L)).thenReturn(Optional.of(ownerEntity));
 
         ownerService.delete(1L);
 
-        verify(ownerRepository).delete(owner);
+        verify(ownerRepository).delete(ownerEntity);
     }
 
     @Test

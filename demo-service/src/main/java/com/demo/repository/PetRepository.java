@@ -1,19 +1,19 @@
 package com.demo.repository;
 
-import com.demo.entity.Pet;
+import com.demo.entity.PetEntity;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface PetRepository {
 
-    List<Pet> getAll();
+    List<PetEntity> getAll();
 
-    Optional<Pet> getById(Long id);
+    Optional<PetEntity> getById(Long id);
 
-    List<Pet> getByOwnerId(Long ownerId);
+    List<PetEntity> getByOwnerId(Long ownerId);
 
-    Pet save(Pet pet);
+    PetEntity save(PetEntity petEntity);
 
-    void delete(Pet pet);
+    void delete(PetEntity petEntity);
 }

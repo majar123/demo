@@ -1,45 +1,34 @@
 package com.demo.repository.impl;
 
-import com.demo.entity.Owner;
+import com.demo.entity.OwnerEntity;
 import com.demo.repository.OwnerRepository;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @ApplicationScoped
-public class OwnerRepositoryImpl implements OwnerRepository, PanacheRepository<Owner> {
-
-    @Inject
-    EntityManager entityManager;
+public class OwnerRepositoryImpl implements OwnerRepository, PanacheRepository<OwnerEntity> {
 
     @Override
-    public List<Owner> getAll() {
+    public List<OwnerEntity> getAll() {
         return listAll();
     }
 
     @Override
-    public Optional<Owner> getById(Long id) {
+    public Optional<OwnerEntity> getById(Long id) {
         return findByIdOptional(id);
     }
 
     @Override
-    @Transactional
-    public Owner save(Owner owner) {
-        if (owner.id == null) {
-            persist(owner);
-            return owner;
-        }
-        return entityManager.merge(owner);
+    public OwnerEntity save(OwnerEntity ownerEntity) {
+        persist(ownerEntity);
+        return ownerEntity;
     }
 
     @Override
-    @Transactional
-    public void delete(Owner owner) {
-        deleteById(owner.id);
+    public void delete(OwnerEntity ownerEntity) {
+        deleteById(ownerEntity.id);
     }
 }

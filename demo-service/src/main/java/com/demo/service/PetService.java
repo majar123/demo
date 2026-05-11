@@ -1,11 +1,12 @@
 package com.demo.service;
 
-import com.demo.entity.Pet;
+import com.demo.entity.PetEntity;
 import com.demo.service.exception.PetNotFoundException;
 import com.demo.repository.PetRepository;
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 
@@ -15,42 +16,48 @@ public class PetService {
     @Inject
     PetRepository petRepository;
 
-    public List<Pet> findAll() {
+    public List<PetEntity> findAll() {
         Log.debug("Fetching all pets");
         return petRepository.getAll();
     }
 
-    public Pet findById(Long id) {
+    public PetEntity findById(Long id) {
         Log.debugf("Fetching pet with id=%d", id);
         return petRepository.getById(id)
                 .orElseThrow(() -> new PetNotFoundException(id));
     }
 
-    public List<Pet> findByOwner(Long ownerId) {
+    public List<PetEntity> findByOwner(Long ownerId) {
         Log.debugf("Fetching pets for ownerId=%d", ownerId);
         return petRepository.getByOwnerId(ownerId);
     }
 
-    public Pet create(Pet pet) {
-        Log.infof("Creating pet name=%s", pet.name);
-        return petRepository.save(pet);
+    @Transactional
+    public PetEntity create(PetEntity petEntity) {
+        Log.infof("Creating pet name=%s", petEntity.name);
+        return petRepository.save(petEntity);
     }
 
-    public Pet update(Long id, Pet updated) {
+    @Transactional
+    public PetEntity update(Long id, PetEntity updated) {
         Log.infof("Updating pet id=%d", id);
-        Pet pet = petRepository.getById(id)
-                .orElseThrow(() -> new PetNotFoundException(id));
-        pet.name = updated.name;
-        pet.birthDate = updated.birthDate;
-        pet.type = updated.type;
-        pet.owner = updated.owner;
-        return petRepository.save(pet);
+
+        PetEntity petEntity = findById(id);
+        petEntity.name = updated.name;
+        petEntity.birthDate = updated.birthDate;
+        petEntity.type = updated.type;
+        petEntity.ownerEntity = updated.ownerEntity;
+
+        return petEntity;
     }
 
+    @Transactional
     public void delete(Long id) {
         Log.infof("Deleting pet id=%d", id);
-        Pet pet = petRepository.getById(id)
-                .orElseThrow(() -> new PetNotFoundException(id));
+        PetEntity pet = findById(id);
+        if (pet.ownerEntity != null && pet.ownerEntity.petEntities != null) {
+            pet.ownerEntity.petEntities.remove(pet);
+        }
         petRepository.delete(pet);
     }
 }

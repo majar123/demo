@@ -1,8 +1,8 @@
 package com.demo.service;
 
-import com.demo.entity.Owner;
-import com.demo.entity.Pet;
-import com.demo.entity.Pet.PetType;
+import com.demo.entity.OwnerEntity;
+import com.demo.entity.PetEntity;
+import com.demo.entity.PetEntity.PetType;
 import com.demo.repository.PetRepository;
 import com.demo.service.exception.PetNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -33,24 +33,24 @@ class PetServiceTest {
 
     @Test
     void findAll_shouldReturnList() {
-        List<Pet> pets = List.of(new Pet(), new Pet());
-        when(petRepository.getAll()).thenReturn(pets);
+        List<PetEntity> petEntities = List.of(new PetEntity(), new PetEntity());
+        when(petRepository.getAll()).thenReturn(petEntities);
 
-        List<Pet> result = petService.findAll();
+        List<PetEntity> result = petService.findAll();
 
         assertEquals(2, result.size());
     }
 
     @Test
     void findById_shouldReturnPet() {
-        Pet pet = new Pet();
-        pet.id = 1L;
-        pet.name = "Buddy";
-        pet.type = PetType.DOG;
+        PetEntity petEntity = new PetEntity();
+        petEntity.id = 1L;
+        petEntity.name = "Buddy";
+        petEntity.type = PetType.DOG;
 
-        when(petRepository.getById(1L)).thenReturn(Optional.of(pet));
+        when(petRepository.getById(1L)).thenReturn(Optional.of(petEntity));
 
-        Pet result = petService.findById(1L);
+        PetEntity result = petService.findById(1L);
 
         assertNotNull(result);
         assertEquals("Buddy", result.name);
@@ -65,61 +65,62 @@ class PetServiceTest {
 
     @Test
     void create_shouldSaveAndReturnPet() {
-        Pet pet = new Pet();
-        pet.name = "Whiskers";
-        pet.type = PetType.CAT;
+        PetEntity petEntity = new PetEntity();
+        petEntity.name = "Whiskers";
+        petEntity.type = PetType.CAT;
 
-        when(petRepository.save(any(Pet.class))).thenReturn(pet);
+        when(petRepository.save(any(PetEntity.class))).thenReturn(petEntity);
 
-        Pet result = petService.create(pet);
+        PetEntity result = petService.create(petEntity);
 
         assertEquals("Whiskers", result.name);
-        verify(petRepository).save(pet);
+        verify(petRepository).save(petEntity);
     }
 
     @Test
     void update_shouldUpdateFieldsAndSave() {
-        Owner owner = new Owner();
-        owner.id = 1L;
+        OwnerEntity ownerEntity = new OwnerEntity();
+        ownerEntity.id = 1L;
 
-        Pet existing = new Pet();
+        PetEntity existing = new PetEntity();
         existing.id = 1L;
         existing.name = "Buddy";
         existing.type = PetType.DOG;
-        existing.owner = owner;
+        existing.ownerEntity = ownerEntity;
 
-        Pet updated = new Pet();
+        PetEntity updated = new PetEntity();
         updated.name = "Buddy Jr";
         updated.birthDate = LocalDate.of(2021, 1, 1);
         updated.type = PetType.DOG;
-        updated.owner = owner;
+        updated.ownerEntity = ownerEntity;
 
         when(petRepository.getById(1L)).thenReturn(Optional.of(existing));
-        when(petRepository.save(existing)).thenReturn(existing);
 
-        Pet result = petService.update(1L, updated);
+        PetEntity result = petService.update(1L, updated);
 
         assertEquals("Buddy Jr", result.name);
-        verify(petRepository).save(existing);
     }
 
     @Test
     void update_notFound_shouldThrowException() {
         when(petRepository.getById(99L)).thenReturn(Optional.empty());
 
-        assertThrows(PetNotFoundException.class, () -> petService.update(99L, new Pet()));
+        assertThrows(PetNotFoundException.class, () -> petService.update(99L, new PetEntity()));
     }
 
     @Test
     void delete_shouldCallRepositoryDelete() {
-        Pet pet = new Pet();
-        pet.id = 1L;
+        OwnerEntity ownerEntity = new OwnerEntity();
+        PetEntity petEntity = new PetEntity();
+        petEntity.id = 1L;
+        petEntity.ownerEntity = ownerEntity;
+        ownerEntity.petEntities.add(petEntity);
 
-        when(petRepository.getById(1L)).thenReturn(Optional.of(pet));
+        when(petRepository.getById(1L)).thenReturn(Optional.of(petEntity));
 
         petService.delete(1L);
 
-        verify(petRepository).delete(pet);
+        verify(petRepository).delete(petEntity);
     }
 
     @Test
@@ -131,10 +132,10 @@ class PetServiceTest {
 
     @Test
     void findByOwner_shouldReturnPets() {
-        List<Pet> pets = List.of(new Pet(), new Pet());
-        when(petRepository.getByOwnerId(1L)).thenReturn(pets);
+        List<PetEntity> petEntities = List.of(new PetEntity(), new PetEntity());
+        when(petRepository.getByOwnerId(1L)).thenReturn(petEntities);
 
-        List<Pet> result = petService.findByOwner(1L);
+        List<PetEntity> result = petService.findByOwner(1L);
 
         assertEquals(2, result.size());
     }

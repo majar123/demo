@@ -1,17 +1,17 @@
 package com.demo.repository;
 
-import com.demo.entity.Owner;
+import com.demo.entity.OwnerEntity;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface OwnerRepository {
 
-    List<Owner> getAll();
+    List<OwnerEntity> getAll();
 
-    Optional<Owner> getById(Long id);
+    Optional<OwnerEntity> getById(Long id);
 
-    Owner save(Owner owner);
+    OwnerEntity save(OwnerEntity ownerEntity);
 
-    void delete(Owner owner);
+    void delete(OwnerEntity ownerEntity);
 }

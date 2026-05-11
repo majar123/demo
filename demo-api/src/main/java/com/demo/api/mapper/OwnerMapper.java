@@ -1,8 +1,7 @@
 package com.demo.api.mapper;
 
-import com.demo.api.dto.request.OwnerRequest;
-import com.demo.api.dto.response.OwnerResponse;
-import com.demo.entity.Owner;
+import com.demo.api.dto.OwnerDto;
+import com.demo.entity.OwnerEntity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -12,23 +11,23 @@ public class OwnerMapper {
     @Inject
     PetMapper petMapper;
 
-    public Owner toEntity(OwnerRequest request) {
-        Owner owner = new Owner();
-        owner.firstName = request.firstName;
-        owner.lastName = request.lastName;
-        owner.phone = request.phone;
-        owner.address = request.address;
-        return owner;
+    public OwnerEntity toEntity(OwnerDto dto) {
+        OwnerEntity ownerEntity = new OwnerEntity();
+        ownerEntity.firstName = dto.firstName;
+        ownerEntity.lastName = dto.lastName;
+        ownerEntity.phone = dto.phone;
+        ownerEntity.address = dto.address;
+        return ownerEntity;
     }
 
-    public OwnerResponse toResponse(Owner owner) {
-        OwnerResponse response = new OwnerResponse();
-        response.id = owner.id;
-        response.firstName = owner.firstName;
-        response.lastName = owner.lastName;
-        response.phone = owner.phone;
-        response.address = owner.address;
-        response.pets = owner.pets.stream().map(petMapper::toResponse).toList();
-        return response;
+    public OwnerDto toDto(OwnerEntity ownerEntity) {
+        OwnerDto dto = new OwnerDto();
+        dto.id = ownerEntity.id;
+        dto.firstName = ownerEntity.firstName;
+        dto.lastName = ownerEntity.lastName;
+        dto.phone = ownerEntity.phone;
+        dto.address = ownerEntity.address;
+        dto.pets = ownerEntity.petEntities.stream().map(petMapper::toDto).toList();
+        return dto;
     }
 }

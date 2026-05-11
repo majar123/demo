@@ -15,7 +15,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "pets")
-public class Pet {
+public class PetEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +24,7 @@ public class Pet {
     @Column(nullable = false)
     public String name;
 
+    @Column(name = "birth_date")
     public LocalDate birthDate;
 
     @Enumerated(EnumType.STRING)
@@ -32,7 +33,7 @@ public class Pet {
 
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
-    public Owner owner;
+    public OwnerEntity ownerEntity;
 
     public enum PetType {
         DOG, CAT, BIRD, RABBIT, OTHER
