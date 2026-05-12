@@ -32,6 +32,6 @@ public class OwnerEntity {
 
     public String address;
 
-    @OneToMany(mappedBy = "ownerEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    public List<PetEntity> petEntities = new ArrayList<>();
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    public List<PetEntity> pets = new ArrayList<>();
 }

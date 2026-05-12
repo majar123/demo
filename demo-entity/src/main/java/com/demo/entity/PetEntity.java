@@ -33,7 +33,7 @@ public class PetEntity {
 
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
-    public OwnerEntity ownerEntity;
+    public OwnerEntity owner;
 
     public enum PetType {
         DOG, CAT, BIRD, RABBIT, OTHER

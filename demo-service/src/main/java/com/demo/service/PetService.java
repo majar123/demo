@@ -46,7 +46,7 @@ public class PetService {
         petEntity.name = updated.name;
         petEntity.birthDate = updated.birthDate;
         petEntity.type = updated.type;
-        petEntity.ownerEntity = updated.ownerEntity;
+        petEntity.owner = updated.owner;
 
         return petEntity;
     }
@@ -55,8 +55,8 @@ public class PetService {
     public void delete(Long id) {
         Log.infof("Deleting pet id=%d", id);
         PetEntity pet = findById(id);
-        if (pet.ownerEntity != null && pet.ownerEntity.petEntities != null) {
-            pet.ownerEntity.petEntities.remove(pet);
+        if (pet.owner != null && pet.owner.pets != null) {
+            pet.owner.pets.remove(pet);
         }
         petRepository.delete(pet);
     }

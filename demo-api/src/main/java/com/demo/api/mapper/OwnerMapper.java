@@ -27,7 +27,7 @@ public class OwnerMapper {
         dto.lastName = ownerEntity.lastName;
         dto.phone = ownerEntity.phone;
         dto.address = ownerEntity.address;
-        dto.pets = ownerEntity.petEntities.stream().map(petMapper::toDto).toList();
+        dto.pets = ownerEntity.pets.stream().map(petMapper::toDto).toList();
         return dto;
     }
 }

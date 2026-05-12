@@ -86,13 +86,13 @@ class PetServiceTest {
         existing.id = 1L;
         existing.name = "Buddy";
         existing.type = PetType.DOG;
-        existing.ownerEntity = ownerEntity;
+        existing.owner = ownerEntity;
 
         PetEntity updated = new PetEntity();
         updated.name = "Buddy Jr";
         updated.birthDate = LocalDate.of(2021, 1, 1);
         updated.type = PetType.DOG;
-        updated.ownerEntity = ownerEntity;
+        updated.owner = ownerEntity;
 
         when(petRepository.getById(1L)).thenReturn(Optional.of(existing));
 
@@ -113,8 +113,8 @@ class PetServiceTest {
         OwnerEntity ownerEntity = new OwnerEntity();
         PetEntity petEntity = new PetEntity();
         petEntity.id = 1L;
-        petEntity.ownerEntity = ownerEntity;
-        ownerEntity.petEntities.add(petEntity);
+        petEntity.owner = ownerEntity;
+        ownerEntity.pets.add(petEntity);
 
         when(petRepository.getById(1L)).thenReturn(Optional.of(petEntity));
 

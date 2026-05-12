@@ -13,7 +13,7 @@ public class PetMapper {
         petEntity.name = dto.name;
         petEntity.birthDate = dto.birthDate;
         petEntity.type = dto.type;
-        petEntity.ownerEntity = ownerEntity;
+        petEntity.owner = ownerEntity;
         return petEntity;
     }
 
@@ -23,7 +23,7 @@ public class PetMapper {
         dto.name = petEntity.name;
         dto.birthDate = petEntity.birthDate;
         dto.type = petEntity.type;
-        dto.ownerId = petEntity.ownerEntity.id;
+        dto.ownerId = petEntity.owner.id;
         return dto;
     }
 }
