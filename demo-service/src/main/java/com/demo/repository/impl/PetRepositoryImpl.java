@@ -4,7 +4,6 @@ import com.demo.entity.PetEntity;
 import com.demo.repository.PetRepository;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +23,7 @@ public class PetRepositoryImpl implements PetRepository, PanacheRepository<PetEn
 
     @Override
     public List<PetEntity> getByOwnerId(Long ownerId) {
-        return list("ownerEntity.id", ownerId);
+        return list("owner.id", ownerId);
     }
 
     @Override
